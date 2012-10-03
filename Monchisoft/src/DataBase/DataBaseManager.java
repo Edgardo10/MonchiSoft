@@ -23,6 +23,10 @@ public class DataBaseManager {
         
         return singletonInstance;
     }
+    
+    public void connectDataBase() {
+        
+    }
 
     /**
      * @return the user
