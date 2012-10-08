@@ -1,19 +1,22 @@
 package DataBase;
 
-import java.net.URL;
+import java.sql.*;
+import EntityTypes.*;
 
 /**
  *
  * @author Ripflame
  */
 public class DataBaseManager {
-    private String user;
-    private String password;
-    private URL dataBaseURL;
-    private static DataBaseManager singletonInstance = null;
+    private static String user = "root";
+    private static String password = "selendis";
+    private static String host = "jdbc:mysql://localhost/monchisDataBase";
+    private static String MySQLDriver = "org.gjt.mm.mysql.Driver";
+    private static Connection connection;
+    private static DataBaseManager singletonInstance;
     
-    private void DataBaseManager() {
-        //Exist only to defeat instantiation
+    protected void DataBaseManager() {
+        //Here just to prevent instantiation
     }
     
     public static DataBaseManager getInstance() {
@@ -24,8 +27,98 @@ public class DataBaseManager {
         return singletonInstance;
     }
     
-    public void connectDataBase() {
+    public Connection connectDataBase() {
+        try {
+            Class.forName(MySQLDriver); //Load the driver
+            connection = DriverManager.getConnection(host, user, password);
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFound: " + e.getMessage());
+        }
         
+        return connection;
+    }
+    
+    public boolean addEntity(Object theEntity, EntityType theType) {        
+        switch (theType) {
+            case sale:
+                //Query the database
+                break;
+            case client:
+                //Query the database
+                break;
+            case promotion:
+                //Query the database
+                break;
+            case expense:
+                //Query the database
+                break;
+            case product:
+                //Query the database
+                break;
+            default:
+                System.out.println("Unspecified type");
+                break;
+        }
+        
+        return false; //Will return true if the object is added correctly, false otherwise
+    }
+    
+    public boolean modifyEntity(Object theEntity, EntityType theType) {
+        switch (theType) {
+            case sale:
+                //Query the database
+                break;
+            case client:
+                //Query the database
+                break;
+            case promotion:
+                //Query the database
+                break;
+            case expense:
+                //Query the database
+                break;
+            case product:
+                //Query the database
+                break;
+            default:
+                System.out.println("Unspecified type");
+                break;
+        }
+        
+        return false; //Will return true if the object is added correctly, false otherwise
+    }
+    
+    public boolean removeEntity(Object theEntity, EntityType theType) {
+        switch (theType) {
+            case sale:
+                //Query the database
+                break;
+            case client:
+                //Query the database
+                break;
+            case promotion:
+                //Query the database
+                break;
+            case expense:
+                //Query the database
+                break;
+            case product:
+                //Query the database
+                break;
+            default:
+                System.out.println("Unspecified type");
+                break;
+        }
+        
+        return false; //Will return true if the object is added correctly, false otherwise
+    }
+    
+    public Object[] queryDataBase(String theQuery) {
+        Object[] objects = new Object[500];
+        //Query the dataBase
+        return objects;
     }
 
     /**
@@ -38,8 +131,8 @@ public class DataBaseManager {
     /**
      * @param user the user to set
      */
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String theUser) {
+        user = theUser;
     }
 
     /**
@@ -52,22 +145,22 @@ public class DataBaseManager {
     /**
      * @param password the password to set
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String thePassword) {
+        password = thePassword;
     }
 
     /**
      * @return the dataBaseURL
      */
-    public URL getDataBaseURL() {
-        return dataBaseURL;
+    public String getDataBaseURL() {
+        return host;
     }
 
     /**
      * @param dataBaseURL the dataBaseURL to set
      */
-    public void setDataBaseURL(URL dataBaseURL) {
-        this.dataBaseURL = dataBaseURL;
+    public void setDataBaseURL(String theHost) {
+        host = theHost;
     }
     
 }
