@@ -1,46 +1,50 @@
 package DataBase;
 
-import java.sql.*;
 import EntityTypes.*;
+import java.sql.*;
 
 /**
  *
  * @author Ripflame
  */
 public class DataBaseManager {
-    private static String user = "root";
-    private static String password = "selendis";
-    private static String host = "jdbc:mysql://localhost/monchisDataBase";
-    private static String MySQLDriver = "org.gjt.mm.mysql.Driver";
-    private static Connection connection;
-    private static DataBaseManager singletonInstance;
+    private static Connection m_connection;
+    private static DataBaseManager m_singletonInstance;
     
     protected void DataBaseManager() {
         //Here just to prevent instantiation
     }
     
     public static DataBaseManager getInstance() {
-        if (singletonInstance == null) {
-            singletonInstance = new DataBaseManager();
+        if (m_singletonInstance == null) {
+            m_singletonInstance = new DataBaseManager();
         }
         
-        return singletonInstance;
+        return m_singletonInstance;
     }
     
-    public Connection connectDataBase() {
+    private static Connection connectDataBase() {
         try {
-            Class.forName(MySQLDriver); //Load the driver
-            connection = DriverManager.getConnection(host, user, password);
+            String mySQLDriver = "org.gjt.mm.mysql.Driver";
+            Class.forName(mySQLDriver); //Load the driver
+            
+            String hostURL = "jdbc:mysql://localhost/monchisDataBase";
+            String userName = "root";
+            String password = "selendis";
+            m_connection = DriverManager.getConnection(hostURL, userName, password);
+            
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println("ClassNotFound: " + e.getMessage());
         }
         
-        return connection;
+        return m_connection;
     }
     
-    public boolean addEntity(Object theEntity, EntityType theType) {        
+    public boolean addEntity(Object theEntity, EntityType theType) {
+        m_connection = connectDataBase();
+        
         switch (theType) {
             case sale:
                 //Query the database
@@ -60,12 +64,20 @@ public class DataBaseManager {
             default:
                 System.out.println("Unspecified type");
                 break;
+        }
+        
+        try {
+            m_connection.close();
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
         }
         
         return false; //Will return true if the object is added correctly, false otherwise
     }
     
     public boolean modifyEntity(Object theEntity, EntityType theType) {
+        m_connection = connectDataBase();
+        
         switch (theType) {
             case sale:
                 //Query the database
@@ -85,12 +97,20 @@ public class DataBaseManager {
             default:
                 System.out.println("Unspecified type");
                 break;
+        }
+        
+        try {
+            m_connection.close();
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
         }
         
         return false; //Will return true if the object is added correctly, false otherwise
     }
     
     public boolean removeEntity(Object theEntity, EntityType theType) {
+        m_connection = connectDataBase();
+        
         switch (theType) {
             case sale:
                 //Query the database
@@ -112,55 +132,27 @@ public class DataBaseManager {
                 break;
         }
         
+        try {
+            m_connection.close();
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        
         return false; //Will return true if the object is added correctly, false otherwise
     }
     
     public Object[] queryDataBase(String theQuery) {
+        m_connection = connectDataBase();
+        
         Object[] objects = new Object[500];
         //Query the dataBase
+        
+        try {
+            m_connection.close();
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        
         return objects;
-    }
-
-    /**
-     * @return the user
-     */
-    public String getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(String theUser) {
-        user = theUser;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String thePassword) {
-        password = thePassword;
-    }
-
-    /**
-     * @return the dataBaseURL
-     */
-    public String getDataBaseURL() {
-        return host;
-    }
-
-    /**
-     * @param dataBaseURL the dataBaseURL to set
-     */
-    public void setDataBaseURL(String theHost) {
-        host = theHost;
-    }
-    
+    }    
 }
