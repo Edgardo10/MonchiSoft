@@ -11,8 +11,9 @@ public class DataBaseManager {
     private static Connection m_connection;
     private static DataBaseManager m_singletonInstance;
     
-    protected void DataBaseManager() {
+    private void DataBaseManager() {
         //Here just to prevent instantiation
+        m_connection = null;
     }
     
     public static DataBaseManager getInstance() {
@@ -23,7 +24,7 @@ public class DataBaseManager {
         return m_singletonInstance;
     }
     
-    private static Connection connectDataBase() {
+    private void connectDataBase() {
         try {
             String mySQLDriver = "org.gjt.mm.mysql.Driver";
             Class.forName(mySQLDriver); //Load the driver
@@ -38,27 +39,25 @@ public class DataBaseManager {
         } catch (ClassNotFoundException e) {
             System.out.println("ClassNotFound: " + e.getMessage());
         }
-        
-        return m_connection;
     }
     
     public boolean addEntity(Object theEntity, EntityType theType) {
-        m_connection = connectDataBase();
+        connectDataBase();
         
         switch (theType) {
-            case sale:
+            case SALE:
                 //Query the database
                 break;
-            case client:
+            case CLIENT:
                 //Query the database
                 break;
-            case promotion:
+            case PROMOTION:
                 //Query the database
                 break;
-            case expense:
+            case EXPENSE:
                 //Query the database
                 break;
-            case product:
+            case PRODUCT:
                 //Query the database
                 break;
             default:
@@ -76,22 +75,22 @@ public class DataBaseManager {
     }
     
     public boolean modifyEntity(Object theEntity, EntityType theType) {
-        m_connection = connectDataBase();
+        connectDataBase();
         
         switch (theType) {
-            case sale:
+            case SALE:
                 //Query the database
                 break;
-            case client:
+            case CLIENT:
                 //Query the database
                 break;
-            case promotion:
+            case PROMOTION:
                 //Query the database
                 break;
-            case expense:
+            case EXPENSE:
                 //Query the database
                 break;
-            case product:
+            case PRODUCT:
                 //Query the database
                 break;
             default:
@@ -109,22 +108,22 @@ public class DataBaseManager {
     }
     
     public boolean removeEntity(Object theEntity, EntityType theType) {
-        m_connection = connectDataBase();
+        connectDataBase();
         
         switch (theType) {
-            case sale:
+            case SALE:
                 //Query the database
                 break;
-            case client:
+            case CLIENT:
                 //Query the database
                 break;
-            case promotion:
+            case PROMOTION:
                 //Query the database
                 break;
-            case expense:
+            case EXPENSE:
                 //Query the database
                 break;
-            case product:
+            case PRODUCT:
                 //Query the database
                 break;
             default:
@@ -142,7 +141,7 @@ public class DataBaseManager {
     }
     
     public Object[] queryDataBase(String theQuery) {
-        m_connection = connectDataBase();
+        connectDataBase();
         
         Object[] objects = new Object[500];
         //Query the dataBase
